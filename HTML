@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Finder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+        }
+        .container {
+            background-color: #f7f7f7;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        p {
+            color: #333;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+ .footer {
+   
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+   background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    min-height: 100vh; /* Ensure the gradient covers the full viewport height */
+}
+
+      
+.footer:hover {
+    background-color: #555; /* Darker shade on hover */
+    color: #eee; /* Slightly lighter text on hover */
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center mb-4">Enter the child's birthdate:</h2>
+    <input type="date" id="birthdate" class="form-control mb-4">
+    <button onclick="findGrade()" class="btn btn-primary btn-block">Calculate</button>
+    <p id="result"></p>
+</div>
+
+<script>
+function findGrade() {
+    const birthDate = new Date(document.getElementById('birthdate').value);
+    const currentYear = new Date().getFullYear();
+
+    let age = currentYear - birthDate.getFullYear();
+    if (birthDate.getMonth() > 2 || (birthDate.getMonth() === 2 && birthDate.getDate() > 31)) {
+        age--;
+    }
+
+    let grade = "";
+    let yearsToFirstGrade = 0;
+
+    if (age >= 2 && age < 3) {
+        grade = "Pre Primary";
+        yearsToFirstGrade = 4;
+    } else if (age >= 3 && age < 4) {
+        grade = "Primary";
+        yearsToFirstGrade = 3;
+    } else if (age >= 4 && age < 5) {
+        grade = "Lower KG";
+        yearsToFirstGrade = 2;
+    } else if (age >= 5 && age < 6) {
+        grade = "Upper KG";
+        yearsToFirstGrade = 1;
+    } else if (age >= 6 && age < 7) {
+        grade = "Grade 1";
+        yearsToFirstGrade = 0;
+    } else {
+        document.getElementById('result').textContent = "Age out of range.";
+        return;
+    }
+
+    const yearInFirstGrade = currentYear + yearsToFirstGrade;
+    const ageOnMarch31InFirstGrade = age + yearsToFirstGrade;
+
+    // Calculate age in years, months, and days on 31st March when they will enter into 1st grade
+    const ageInFirstGradeYear = new Date(yearInFirstGrade, 2, 31) - birthDate;
+    const yearsInFirstGrade = Math.floor(ageInFirstGradeYear / (365.25 * 24 * 60 * 60 * 1000));
+    const monthsInFirstGrade = Math.floor((ageInFirstGradeYear % (365.25 * 24 * 60 * 60 * 1000)) / (30.44 * 24 * 60 * 60 * 1000));
+    let daysInFirstGrade = Math.floor((ageInFirstGradeYear % (30.44 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
+
+    // Adjust for exact days in the month
+    if (birthDate.getDate() === 1 && birthDate.getMonth() === 2) {
+        daysInFirstGrade = 0;
+    }
+
+    const resultText = `The student should be admitted to ${grade}. He will be in 1st grade in ${yearInFirstGrade} and will be ${ageOnMarch31InFirstGrade} years old as per 31st March in the year he is in 1st grade. The child will be ${yearsInFirstGrade} years, ${monthsInFirstGrade} months, and ${daysInFirstGrade} days old on 31st March when he will enter into 1st Grade.`;
+    document.getElementById('result').textContent = resultText;
+}
+
+</script>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="footer">
+    Made by Siddhartha Dennis George
+</div>
+</body>
+</html>
